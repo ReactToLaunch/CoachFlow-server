@@ -5,33 +5,33 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 
-// Helper function to pause execution
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const markAttendance = asyncHandler(async (req, res) => {
   const { date, courseId, records } = req.body;
 
-  // Validate request
+  
   if (!records || records.length === 0) {
     throw new ApiError(400, "No attendance records provided");
   }
 
-  // 1. Create Attendance Record in DB
+ 
   const newRecord = await Attendance.create({ date, courseId, records });
 
   if (!newRecord) {
     throw new ApiError(500, "Failed to create attendance record");
   }
 
-  // 2. Send Emails Sequentially with Delay
+  
   console.log(`📧 Starting email notifications for ${records.length} students...`);
 
-  // We use a simple FOR loop instead of map/Promise.all to allow waiting (await)
+ 
   for (const record of records) {
     try {
       const student = await User.findById(record.studentId);
 
-      // Check for Email
+    
       if (student && student.email) {
         let subject = "";
         let htmlContent = "";
@@ -62,14 +62,14 @@ const markAttendance = asyncHandler(async (req, res) => {
           `;
         }
 
-        // Send Email via Resend
+       
         await sendEmail(student.email, subject, htmlContent);
         
-        // 🛑 CRITICAL: Wait 1 second before the next email to prevent "Rate Limit" errors
+       
         await sleep(1000); 
       }
     } catch (innerError) {
-      // Log error but continue the loop for other students
+      
       console.error(`❌ Failed to send email to student ID ${record.studentId}:`, innerError.message);
     }
   }

@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Otp } from "../models/otp.model.js";
 import { sendEmail, generateOtp } from "../utils/generateOtp.js";
-import jwt from "jsonwebtoken";
+
 
 const generateAccessAndRefreshTokens = async(userId) => {
   try {

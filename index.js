@@ -15,7 +15,7 @@ const app = express()
 
 app.use(express.json());
 app.use((err, req, res, next) => {
-  // Catch bad JSON errors
+ 
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     console.error('❌ JSON Parse Error:', err.message);
     return res.status(400).json({ success: false, message: 'Invalid JSON payload sent' });

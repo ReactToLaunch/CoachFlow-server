@@ -12,7 +12,7 @@ const attendanceSchema = new mongoose.Schema({
   records: [{
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // This MUST match the name of your User model
+      ref: 'User', 
       required: true
     },
     name: {
@@ -27,7 +27,7 @@ const attendanceSchema = new mongoose.Schema({
   }]
 }, { timestamps: true });
 
-// Create the model
+
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 
 
