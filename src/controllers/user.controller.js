@@ -37,15 +37,9 @@ const registerUser = asyncHandler( async (req, res) => {
        throw new ApiError(400, "All Fields are Required") 
     }
 
-  //  const allowedDomain = 'students.vnit.ac.in'
-
-  //  const emailDomain = email.split("@")[1];
-
-  //  if(emailDomain !== allowedDomain) {
-
-  // throw new ApiError(401, "Only Vnit Students email Address is Allowed")
-  //  }
-
+     if (password.length > 8) {
+        throw new ApiError(400, "Password can only be 8 characters long")
+     }
 
     const exixteduser = await User.findOne({
         $or: [{email}, {EnrollmentNumber}]
@@ -76,9 +70,9 @@ if (!createdUser) {
 
 
 return res.json(
-    new ApiResponse(200, "User Registered Successfully")
-)
-})
+    new ApiResponse(200, "User Registered Successfully", {user: createdUser})
+
+)})
 
 
 const loginUser = asyncHandler( async (req, res) => {
