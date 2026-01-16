@@ -70,7 +70,7 @@ if (!createdUser) {
 
 
 return res.json(
-    new ApiResponse(200, "User Registered Successfully", {user: createdUser})
+    new ApiResponse(200, {user: createdUser},  "User Registered Successfully",)
 
 )})
 
@@ -97,7 +97,7 @@ const loginUser = asyncHandler( async (req, res) => {
   }
 
   const {refreshToken, accessToken} = await generateAccessAndRefreshTokens(user._id);
-  console.log(accessToken);
+
   
 
   const loggedInUser = await User.findById(user._id).select(
@@ -113,11 +113,13 @@ return res.status(200)
 .cookie("refreshToken", refreshToken, options)
 .cookie("accessToken", accessToken, options)
 .json(
-  new ApiResponse(200, "User Logged In Successfully", {
+  new ApiResponse(200, {
     user: loggedInUser,
     accessToken,
-    refreshToken
-  }
+    refreshToken,
+    
+  },
+  "User Logged In Successfully",
 ))
 
 })
