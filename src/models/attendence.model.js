@@ -19,6 +19,7 @@ const attendanceSchema = new mongoose.Schema({
       type: String,
       required: true
     },
+
     status: {
       type: String,
       enum: ['PRESENT', 'ABSENT'],
@@ -32,3 +33,4 @@ const Attendance = mongoose.model('Attendance', attendanceSchema);
 
 
 export { Attendance };
+
