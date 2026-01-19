@@ -26,15 +26,15 @@ const sendEmail = async (email, otp) => {
     const response = await axios.post(
       'https://api.brevo.com/v3/smtp/email',
       {
-        // 1. Sender must be your verified email on Brevo
+        
         sender: { name: "Solvify", email: "aasimsyed398@gmail.com" }, 
         
-        // 2. Recipient must be an array of objects
+       
         to: [{ email: email }],
         
         subject: 'Verification OTP',
         
-        // 3. Brevo uses 'htmlContent', not 'html'
+        
         htmlContent: `
           <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
             <h2>Verification Code</h2>
@@ -47,7 +47,7 @@ const sendEmail = async (email, otp) => {
       {
         headers: {
           'accept': 'application/json',
-          'api-key': process.env.BREVO_PASS, // Reads from your .env
+          'api-key': process.env.BREVO_PASS, 
           'content-type': 'application/json',
         },
       }
