@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Otp } from "../models/otp.model.js";
 import { sendEmail, generateOtp } from "../utils/generateOtp.js";
+import { UserRegisterValidation, loginAdminSchema} from "../validations/authValidation.js"
 
 
 const generateAccessAndRefreshTokens = async(userId) => {
@@ -29,18 +30,27 @@ const generateAccessAndRefreshTokens = async(userId) => {
 
 
 const registerUser = asyncHandler( async (req, res) => {
-    const {fullName, email, phone, password, EnrollmentNumber, selectedRole} = req.body;
     
-    
+  const result = registerStudentSchema.safeParse(req.body);
 
-    if ([fullName, email, phone, password, EnrollmentNumber, selectedRole].some((field) => field?.trim() === "")) {
-       throw new ApiError(400, "All Fields are Required") 
+
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation Error",
+        errors: result.error.format()
+      });
     }
 
-     if (password.length > 8) {
-        throw new ApiError(400, "Password can only be 8 characters long")
-     }
-
+    const { 
+      fullName, 
+      email, 
+      phone, 
+      password, 
+      EnrollmentNumber, 
+      selectedRole 
+    } = result.data;
+    
     const exixteduser = await User.findOne({
         $or: [{email}, {EnrollmentNumber}]
     })
@@ -72,12 +82,20 @@ return res.json(
     new ApiResponse(200, {user: createdUser},  "User Registered Successfully",)
 
 )})
-// ------------------------------------------------------------------------------------
-// login user controller
-const loginUser = asyncHandler( async (req, res) => {
-  const {email, EnrollmentNumber, password} = req.body;
 
-// need to check email format and Enrollment number format!!!!!!
+const loginUser = asyncHandler( async (req, res) => {
+  
+  const result = loginStudentSchema.safeParse(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation Error",
+        errors: result.error.format()
+      });
+    }
+
+    const { email, EnrollmentNumber, password } = result.data;
 
 
 // checking all fields are provided
@@ -304,24 +322,5 @@ const resetPassword = asyncHandler( async (req, res) => {
 });
 
 
-const getAllStudents = asyncHandler( async (req, res) => {
-  const users = await User.find({selectedRole: "student"}).select("_id fullName EnrollmentNumber email phone");
-
-   if (!users) {
-    throw new ApiError(500, "Somthing went wrong while fetching students")
-   }
-     return res.status(200).json({
-      success: true,
-      data: users
-    });
-  
-});
- 
-
-
-
-
-
-
-export {registerUser, verifyOtp, Otpgenerate, loginUser, getAllStudents,resetPassword};
+export {registerUser, verifyOtp, Otpgenerate, loginUser, resetPassword};
 

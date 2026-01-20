@@ -1,0 +1,144 @@
+================================================================================
+PROJECT COACHFLOW - MVP BLUEPRINT & SCHEMA CONTRACT
+Target Launch: Feb 25, 2026
+================================================================================
+
+--------------------------------------------------------------------------------
+1. CRITICAL RULES (DO NOT BREAK)
+--------------------------------------------------------------------------------
+[ ] Rule 1: No direct "Delete" from DB. Use 'isActive: false' (Soft Delete).
+[ ] Rule 2: All Phone Numbers must be 10 digits and unique in the User table.
+[ ] Rule 3: Use 'mongoose.Types.ObjectId' for all relationships.
+[ ] Rule 4: All dates must be stored in UTC format.
+[ ] Rule 5: Run Lint/Prettier before every commit.
+
+--------------------------------------------------------------------------------
+2. DATABASE SCHEMAS (THE "DATA CONTRACT")
+--------------------------------------------------------------------------------
+
+A. AUTHENTICATION MODULE
+Model Name: User
+Collection: users
+Fields:
+  - name: String (Required)
+  - phone: String (Unique, Index, Required) -> This is the Login ID
+  - password: String (Hashed)
+  - role: String (Enum: 'admin', 'student')
+  - isActive: Boolean (Default: true)
+  - fcmToken: String (For Push Notifications)
+  - createdAt: Date
+  - updatedAt: Date
+
+B. STUDENT DATA MODULE
+Model Name: StudentProfile
+Collection: student_profiles
+Fields:
+  - user: ObjectId (Ref: User) -> Link to Auth
+  - enrollmentId: String (Unique, e.g., "SOL-2026-001")
+  - batch: ObjectId (Ref: Batch)
+  - parentPhone: String (Required)
+  - photoUrl: String (Default: "")
+  - address: String
+  - gender: String (Enum: 'Male', 'Female')
+  - joiningDate: Date
+  - feeStatus: String (Enum: 'PAID', 'DUE', 'OVERDUE')
+  - nextFeeDueDate: Date
+
+C. BATCH MODULE
+Model Name: Batch
+Collection: batches
+Fields:
+  - name: String (e.g., "JEE Class 12 - A")
+  - code: String (Unique, e.g., "JEE-12A")
+  - subjects: Array of Strings ["Physics", "Maths"]
+  - schedule: String (Description, e.g., "Mon-Fri 4pm")
+  - isActive: Boolean
+
+D. ATTENDANCE MODULE
+Model Name: Attendance
+Collection: attendance
+Fields:
+  - date: Date (Index) -> Store as Midnight UTC
+  - batch: ObjectId (Ref: Batch)
+  - totalStudents: Number
+  - presentCount: Number
+  - absentStudents: Array of ObjectIds (Ref: User) -> List of WHO was absent
+  - markedBy: ObjectId (Ref: User) -> The Admin who marked it
+
+E. ACADEMIC RESULTS MODULE
+Model Name: Result
+Collection: results
+Fields:
+  - testName: String (e.g., "Weekly Physics Test 4")
+  - testDate: Date
+  - batch: ObjectId (Ref: Batch)
+  - totalMarks: Number (e.g., 300)
+  - photoUrl: String (Optional, image of physical result sheet)
+  - records: Array of Objects
+      [
+        {
+          student: ObjectId (Ref: User),
+          marks: Number,
+          rank: Number
+        }
+      ]
+
+F. COMMUNICATION MODULE
+Model Name: Notice
+Collection: notices
+Fields:
+  - title: String
+  - content: String (Rich Text/HTML)
+  - type: String (Enum: 'URGENT', 'INFO', 'RESULT', 'HOLIDAY')
+  - targetBatches: Array of ObjectIds (Ref: Batch) -> [] means All Batches
+  - attachments: Array of Strings (Image URLs)
+  - postedBy: ObjectId (Ref: User)
+  - createdAt: Date
+
+--------------------------------------------------------------------------------
+3. DEVELOPMENT CHECKLIST & API ROADMAP
+--------------------------------------------------------------------------------
+
+PHASE 1: THE BACKBONE (Setup & Profiles)
+[ ] Setup Folder Structure (MSC Architecture)
+[ ] Config MongoDB Connection
+[ ] API: POST /auth/login (Admin & Student)
+[ ] API: POST /admin/batches (Create Batch)
+[ ] API: POST /admin/students (Create User + Profile)
+[ ] API: GET /student/profile (Fetch My ID Card details)
+[ ] Frontend: Admin "Add Student" Form
+[ ] Frontend: App "Digital ID Card"
+
+PHASE 2: ATTENDANCE (The Core Utility)
+[ ] API: GET /admin/students/:batchId (List for marking)
+[ ] API: POST /admin/attendance (Save absent list)
+[ ] API: GET /student/attendance (Fetch my monthly calendar)
+[ ] Logic: Calculate Attendance % on the fly
+[ ] Frontend: Admin "3-Click" Attendance UI
+[ ] Frontend: App Visual Calendar (Green/Red dots)
+
+PHASE 3: ACADEMICS (The Value Add)
+[ ] API: POST /admin/results (Upload Marks)
+[ ] API: GET /student/results (Fetch my graphs)
+[ ] Logic: Auto-calculate Ranks in Backend Service
+[ ] Frontend: App Performance Graph (Chart)
+[ ] Frontend: Admin Marks Entry Form
+
+PHASE 4: COMMUNICATION (The Stickiness)
+[ ] API: POST /admin/notices (Trigger FCM Notification)
+[ ] API: GET /student/notices (The Feed)
+[ ] Frontend: App "Urgent Alert" UI
+[ ] Frontend: Admin Notice Creator
+
+PHASE 5: POLISH (The Agency Standard)
+[ ] Script: Populate DB with 500 dummy students
+[ ] Script: Populate DB with 6 months of dummy attendance
+[ ] Security: Secure API Endpoints (Admin Only middleware)
+[ ] Optimization: Index MongoDB fields (phone, batch, date)
+
+--------------------------------------------------------------------------------
+4. SCALABILITY NOTES (FUTURE PROOFING)
+--------------------------------------------------------------------------------
+- Images: Currently storing as Strings (URLs). Future: AWS S3 Bucket.
+- Notifications: Currently basic FCM. Future: Queue system (BullMQ) for bulk sending.
+- Caching: Future: Redis for caching 'GET /student/profile'.

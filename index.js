@@ -1,5 +1,5 @@
 import express from "express"
-import ConnectDb from "./src/db.js"
+import ConnectDb from "./src/config/db.js"
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -47,6 +47,7 @@ ConnectDb()
 import userRouter from './src/routes/user.route.js';
 import otpRouter from "./src/routes/verifyUser.route.js";
 import markAttendenceRouter from "./src/routes/markAttendence.route.js";
+import adminRouter from "./src/routes/admin.route.js";
 
 
 
@@ -57,3 +58,4 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/users", otpRouter);
 app.use("/api/v1/attendence", markAttendenceRouter);
 app.use("/api/v1/students", userRouter);
+app.use("/api/v1/admin", adminRouter);
