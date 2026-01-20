@@ -137,77 +137,6 @@ const loginUser = asyncHandler( async (req, res) => {
 
 
 
-// user clicks on send otp
-// do otp verification
-// if otp verified
-
-
-// now the user can reset password
-// send user to another window 
-
-const resetPassword = asyncHandler( async (req, res) => {
-  // get the new password from req.body
-  const { email, newPassword, Otp } = req.body;
-
-// E: check if email and new password fields are provided
-  if ([email, newPassword, Otp].some((field) => field?.trim() === "")) {
-    throw new ApiError(401, "all Fields are required")
-  }
-// E: check if new password is 8 characters long
-
-  if (newPassword.length > 8) {
-    throw new ApiError(400, "Password can only be 8 characters long")
- }
-// find user by email
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-   
-   const record = await Otp.findOne({ email });
-
-  if (!record) {
-    throw new ApiError(404, "OTP not found or expired");
-  }
-
-
-  if (record.expiresAt < Date.now()) {
-    await Otp.deleteOne({_id: record._id})
-    throw new ApiError(400, "Otp is Expired ")
-  }
-
-  const isValid = await record.validateOtp(Otp);
-
-  if (!isValid) {
-    throw new ApiError(404, "Invalid OTP");
-  }
- 
-
-  // 🔑 THIS IS ALL YOU DO
-  user.password = newPassword;
-// hash new password
-// update password in db
-  await user.save();
-
-
- 
-    
-  // send response
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      "Password reset successful. Please login again."
-    )
-  );
-
-});
-
-
-
-
-
-
 const Otpgenerate = asyncHandler(async (req, res) => {
     
     const { email } = req.body;
@@ -306,6 +235,75 @@ const verifyOtp = asyncHandler(async (req, res) => {
   );
 });
 
+
+
+// user clicks on send otp
+// do otp verification
+// if otp verified
+
+
+// now the user can reset password
+// send user to another window 
+
+const resetPassword = asyncHandler( async (req, res) => {
+  // get the new password from req.body
+  const { email, newPassword, otp } = req.body;
+
+// E: check if email and new password fields are provided
+  if ([email, newPassword, otp].some((field) => field?.trim() === "")) {
+    throw new ApiError(401, "all Fields are required")
+  }
+// E: check if new password is 8 characters long
+
+  if (newPassword.length > 8) {
+    throw new ApiError(400, "Password can only be 8 characters long")
+ }
+// find user by email
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+   
+   const record = await Otp.findOne({ email });
+
+  if (!record) {
+    throw new ApiError(404, "OTP not found or expired");
+  }
+
+
+  if (record.expiresAt < Date.now()) {
+    await Otp.deleteOne({_id: record._id})
+    throw new ApiError(400, "Otp is Expired ")
+  }
+
+  const isValid = await record.validateOtp(otp);
+
+  if (!isValid) {
+    throw new ApiError(404, "Invalid OTP");
+  }
+ 
+
+  // 🔑 THIS IS ALL YOU DO
+  user.password = newPassword;
+// hash new password
+// update password in db
+  await user.save();
+
+
+ 
+    
+  // send response
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "Password reset successful. Please login again."
+    )
+  );
+
+});
+
+
 const getAllStudents = asyncHandler( async (req, res) => {
   const users = await User.find({selectedRole: "student"}).select("_id fullName EnrollmentNumber email phone");
 
@@ -319,6 +317,8 @@ const getAllStudents = asyncHandler( async (req, res) => {
   
 });
  
+
+
 
 
 
