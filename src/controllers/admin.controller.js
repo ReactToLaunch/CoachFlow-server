@@ -3,7 +3,7 @@ import {ApiError} from '../utils/ApiError.js';
 import {ApiResponse} from '../utils/ApiResponse.js';
 import { Admin } from '../models/admin.model.js';
 import dotenv from "dotenv";
-import { registerAdminSchema, loginAdminSchema } from '../validations/admin.validation.js';
+import { RegisterAdminSchema, loginAdminSchema } from '../validations/authValidation.js';
 
 dotenv.config()
 
@@ -14,7 +14,7 @@ const RegisterAdmin = asyncHandler( async (req, res) => {
 
 
 
-    const result = registerAdminSchema.safeParse(req.body);
+    const result = RegisterAdminSchema.safeParse(req.body);
 
     
     if (!result.success) {

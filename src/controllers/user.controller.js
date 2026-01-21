@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Otp } from "../models/otp.model.js";
 import { sendEmail, generateOtp } from "../utils/generateOtp.js";
-import { UserRegisterValidation, loginAdminSchema} from "../validations/authValidation.js"
+import { UserRegisterValidationSchema, loginStudentSchema} from "../validations/userValidation.js"
 
 
 const generateAccessAndRefreshTokens = async(userId) => {
@@ -31,7 +31,7 @@ const generateAccessAndRefreshTokens = async(userId) => {
 
 const registerUser = asyncHandler( async (req, res) => {
     
-  const result = registerStudentSchema.safeParse(req.body);
+  const result = UserRegisterValidationSchema.safeParse(req.body);
 
 
     if (!result.success) {
