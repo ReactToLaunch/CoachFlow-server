@@ -5,18 +5,27 @@ const batchSchema = new Schema(
     name: {
       type: String,
       required: true,
-      trim: true, // e.g., "JEE Class 12 - Alpha"
+      trim: true, 
     },
-    code: {
+    batchcode: {
       type: String,
       required: true,
       unique: true,
       trim: true,
-      uppercase: true, // e.g., "JEE-12A"
+      uppercase: true, 
     },
     subjects: [{
-      type: String, // e.g., "Physics", "Maths"
+      type: String,
+      required: true, 
     }],
+    year: {
+      type: Number,
+      required: true,
+    },
+    time: {
+      type: String,
+      required: true
+    },
     isActive: {
       type: Boolean,
       default: true,
