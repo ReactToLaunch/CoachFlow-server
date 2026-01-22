@@ -4,6 +4,8 @@ import {ApiResponse} from '../utils/ApiResponse.js';
 import { Admin } from '../models/admin.model.js';
 import dotenv from "dotenv";
 import { RegisterAdminSchema, loginAdminSchema } from '../validations/authValidation.js';
+import { Notice } from "../models/notice.js"
+import {} from "../models/"
 
 dotenv.config()
 
@@ -82,5 +84,21 @@ const loginAdmin = asyncHandler( async (req, res) => {
     .json(new ApiResponse({admin, token}, "Admin logged in successfully", true));
 
 });
+
+
+const SendNotices = asyncHandler( async (req, res) => {
+
+   
+
+
+
+});
+
+
+
+
+
+
+
 
 export { RegisterAdmin, loginAdmin };

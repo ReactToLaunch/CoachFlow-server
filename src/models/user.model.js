@@ -46,6 +46,10 @@ const userSchema = new Schema(
     required: true,
     enum: ['student', 'admin', 'teacher'],
     default: 'student'  
+  },
+  fcmToken: {
+    type: String,
+    default: null
   }
   
   

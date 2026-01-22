@@ -1,6 +1,6 @@
 import { Attendance } from '../models/attendence.model.js';
 import { User } from '../models/user.model.js';
-import { sendEmail } from '../utils/attendanceService.js'; // Ensure path is correct
+import { sendEmail } from '../utils/EmailService.js'; 
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';

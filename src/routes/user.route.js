@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { registerUser, loginUser,Otpgenerate, verifyOtp, resetPassword} from "../controllers/user.controller.js";
+import { registerUser, loginUser,Otpgenerate, verifyOtp, resetPassword, SaveFcmToken} from "../controllers/user.controller.js";
 
 const router = Router()
 
@@ -10,6 +10,8 @@ router.route("/otp-generate").post(Otpgenerate);
 
 router.route("/verify-otp").post(verifyOtp);
 router.route("/resetPassword").post(resetPassword);
+
+router.route("/saveToken").put(SaveFcmToken)
 
 
 export default router;

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// ⚠️ REPLACE WITH YOUR NEW *API* KEY (starts with 'xkeysib-')
+
 const BREVO_API_KEY = process.env.BREVO_PASS;
 
 export const sendEmail = async (to, subject, htmlContent) => {

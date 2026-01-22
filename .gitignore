@@ -126,3 +126,6 @@ task.txt/
 .wwebjs_cache
 
  OriginalENV/
+
+
+src/config/serviceAccountKey.json
