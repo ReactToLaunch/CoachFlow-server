@@ -4,8 +4,8 @@ import {ApiResponse} from '../utils/ApiResponse.js';
 import { Admin } from '../models/admin.model.js';
 import dotenv from "dotenv";
 import { RegisterAdminSchema, loginAdminSchema } from '../validations/authValidation.js';
-import { Notice } from "../models/notice.js"
-import {} from "../models/"
+import { Notice } from "../models/notice.js";
+import { Batch } from '../models/batch.model.js';
 
 dotenv.config()
 
@@ -86,13 +86,29 @@ const loginAdmin = asyncHandler( async (req, res) => {
 });
 
 
-const SendNotices = asyncHandler( async (req, res) => {
+   const CreateBatch = asyncHandler( async (req, res) => {
+     const {name, batchcode, subjects, year, time} = req.body;
 
-   
+     const existingBatch = await Batch.findOne({batchcode})
+
+     if (existingBatch) {
+        throw new ApiError(409, "Batch with this code already exists")
+     }
+
+     const batch = await Batch.create({
+        name,
+        batchcode,
+        subjects,
+        year,
+        time
+     })
+
+     return res.status(201)
+     .json(new ApiResponse({batch}, "Batch created successfully", true));
 
 
 
-});
+   })
 
 
 
@@ -101,4 +117,5 @@ const SendNotices = asyncHandler( async (req, res) => {
 
 
 
-export { RegisterAdmin, loginAdmin };
+
+export { RegisterAdmin, loginAdmin, CreateBatch };
