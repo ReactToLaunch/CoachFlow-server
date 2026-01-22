@@ -12,6 +12,7 @@ const adminSchema = new Schema(
       trim: true,
     },
     password: {
+      
       type: String,
       required: true,
       select: false, 
