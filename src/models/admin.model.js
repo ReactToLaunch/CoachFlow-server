@@ -17,7 +17,7 @@ const adminSchema = new Schema(
       required: true,
       select: false, 
     },
-    name: {
+    Name: {
       type: String,
       default: "Super Admin",
     }

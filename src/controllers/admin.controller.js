@@ -3,7 +3,7 @@ import {ApiError} from '../utils/ApiError.js';
 import {ApiResponse} from '../utils/ApiResponse.js';
 import { Admin } from '../models/admin.model.js';
 import dotenv from "dotenv";
-import { RegisterAdminSchema, loginAdminSchema } from '../validations/authValidation.js';
+import { RegisterAdminSchema, loginAdminSchema, createBatchSchema } from '../validations/authValidation.js';
 import { Notice } from "../models/notice.js";
 import { Batch } from '../models/batch.model.js';
 
@@ -20,14 +20,10 @@ const RegisterAdmin = asyncHandler( async (req, res) => {
 
     
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
-        message: "Validation Error",
-        errors: result.error.format() 
-      });
+     throw new ApiError(400, "Validation Error", result.error.format());
     }
 
-    const { name, email, password, secretKey } = result.data;
+    const { Name, email, password, secretKey } = result.data;
 
  if (secretKey !== process.env.ADMIN_SECRET) {
   throw new ApiError(404, "Secret key is not corrrect")
@@ -43,11 +39,17 @@ if (existingAdmin) {
 const admin = await Admin.create({
     email,
    password,
-    name
+    Name
 })
 
-return res.status(201)
-.json(new ApiResponse({admin},"Admin registered successfully", true));
+const createdAdmin = await Admin.findById(admin._id).select(" -password -refreshToken");
+
+if (!createdAdmin) {
+    throw new ApiError(500, "Something went wrong while registering admin")
+}
+
+return res.status(200)
+.json(new ApiResponse(200, {admin: createdAdmin}, "Admin registered successfully"));
 
 });
 
@@ -57,11 +59,7 @@ const loginAdmin = asyncHandler( async (req, res) => {
     const result = loginAdminSchema.safeParse(req.body);
 
     if (!result.success) {
-      return res.status(400).json({
-        success: false,
-        message: "Validation Error",
-        errors: result.error.format() 
-      });
+      throw new ApiError(400, "Validation Error", result.error.format());
     }
 
     const { email, password } = result.data;
@@ -81,13 +79,18 @@ const loginAdmin = asyncHandler( async (req, res) => {
     const token = admin.generateAccessToken();
   
     return res.status(200)
-    .json(new ApiResponse({admin, token}, "Admin logged in successfully", true));
+    .json(new ApiResponse(200, {admin, token}, "Admin logged in successfully"));
 
 });
 
 
    const CreateBatch = asyncHandler( async (req, res) => {
-     const {name, batchcode, subjects, year, time} = req.body;
+     
+    const result = createBatchSchema.safeParse(req.body);
+
+    if (!result.success) {
+      throw new ApiError(400, "Validation Error", result.error.format());
+    }
 
      const existingBatch = await Batch.findOne({batchcode})
 
@@ -96,7 +99,7 @@ const loginAdmin = asyncHandler( async (req, res) => {
      }
 
      const batch = await Batch.create({
-        name,
+        Name,
         batchcode,
         subjects,
         year,
@@ -106,16 +109,21 @@ const loginAdmin = asyncHandler( async (req, res) => {
      return res.status(201)
      .json(new ApiResponse({batch}, "Batch created successfully", true));
 
-
-
    })
 
 
 
+const getAllBatches = asyncHandler( async (req, res) => {
+
+    const batches = await Batch.find();
+
+    return res.status(200)
+    .json(new ApiResponse({batches}, "Batches fetched successfully", true));
+
+});
 
 
 
 
 
-
-export { RegisterAdmin, loginAdmin, CreateBatch };
+export { RegisterAdmin, loginAdmin, CreateBatch, getAllBatches };
