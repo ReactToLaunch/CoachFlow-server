@@ -67,13 +67,14 @@ const loginAdmin = asyncHandler( async (req, res) => {
     if (!admin) {
         throw new ApiError(404, "Admin not found") 
     }
-    const isPasswordValid = await admin.comparePassword(password)
+    const isPasswordValid = await admin.validatePassword(password)
 
     if (!isPasswordValid) {
         throw new ApiError(401, "Invalid credentials") 
     }
 
     const token = admin.generateAccessToken();
+    
   
     return res.status(200)
     .json(new ApiResponse(200, {admin, token}, "Admin logged in successfully"));

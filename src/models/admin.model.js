@@ -15,7 +15,6 @@ const adminSchema = new Schema(
       
       type: String,
       required: true,
-      select: false, 
     },
     Name: {
       type: String,
@@ -33,8 +32,8 @@ adminSchema.pre("save", async function (next) {
 });
 
 
-adminSchema.methods.validatePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+adminSchema.methods.validatePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
 
