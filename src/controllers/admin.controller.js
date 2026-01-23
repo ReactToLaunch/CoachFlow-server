@@ -106,8 +106,8 @@ const loginAdmin = asyncHandler( async (req, res) => {
         time
      })
 
-     return res.status(201)
-     .json(new ApiResponse({batch}, "Batch created successfully", true));
+     return res.status(200)
+     .json(new ApiResponse(200, {batch}, "Batch created successfully"));
 
    })
 
@@ -118,7 +118,7 @@ const getAllBatches = asyncHandler( async (req, res) => {
     const batches = await Batch.find();
 
     return res.status(200)
-    .json(new ApiResponse({batches}, "Batches fetched successfully", true));
+    .json(new ApiResponse(200, {batches}, "Batches fetched successfully"));
 
 });
 
