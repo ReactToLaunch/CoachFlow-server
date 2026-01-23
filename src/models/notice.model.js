@@ -16,7 +16,7 @@ const noticeSchema = new Schema(
       enum: ["URGENT", "INFO", "RESULT", "HOLIDAY"],
       default: "INFO",
     },
-    // If empty [], it targets ALL batches.
+    
     targetBatches: [{
       type: Schema.Types.ObjectId,
       ref: "Batch",

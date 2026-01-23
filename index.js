@@ -48,6 +48,7 @@ import userRouter from './src/routes/user.route.js';
 import otpRouter from "./src/routes/verifyUser.route.js";
 import markAttendenceRouter from "./src/routes/markAttendence.route.js";
 import adminRouter from "./src/routes/admin.route.js";
+import batchesRouter from "./src/routes/batches.route.js";
 
 
 
@@ -59,3 +60,4 @@ app.use("/api/v1/users", otpRouter);
 app.use("/api/v1/attendence", markAttendenceRouter);
 app.use("/api/v1/students", userRouter);
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/batches", batchesRouter);

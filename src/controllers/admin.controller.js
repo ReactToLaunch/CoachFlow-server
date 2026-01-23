@@ -3,13 +3,10 @@ import {ApiError} from '../utils/ApiError.js';
 import {ApiResponse} from '../utils/ApiResponse.js';
 import { Admin } from '../models/admin.model.js';
 import dotenv from "dotenv";
-import { RegisterAdminSchema, loginAdminSchema, createBatchSchema } from '../validations/authValidation.js';
-import { Notice } from "../models/notice.js";
-import { Batch } from '../models/batch.model.js';
+import { RegisterAdminSchema, loginAdminSchema} from '../validations/authValidation.js';
+
 
 dotenv.config()
-
-
 
 
 const RegisterAdmin = asyncHandler( async (req, res) => {
@@ -84,46 +81,5 @@ const loginAdmin = asyncHandler( async (req, res) => {
 });
 
 
-   const CreateBatch = asyncHandler( async (req, res) => {
-     
-    const result = createBatchSchema.safeParse(req.body);
 
-    if (!result.success) {
-      throw new ApiError(400, "Validation Error", result.error.format());
-    }
-
-     const existingBatch = await Batch.findOne({batchcode})
-
-     if (existingBatch) {
-        throw new ApiError(409, "Batch with this code already exists")
-     }
-
-     const batch = await Batch.create({
-        Name,
-        batchcode,
-        subjects,
-        year,
-        time
-     })
-
-     return res.status(200)
-     .json(new ApiResponse(200, {batch}, "Batch created successfully"));
-
-   })
-
-
-
-const getAllBatches = asyncHandler( async (req, res) => {
-
-    const batches = await Batch.find();
-
-    return res.status(200)
-    .json(new ApiResponse(200, {batches}, "Batches fetched successfully"));
-
-});
-
-
-
-
-
-export { RegisterAdmin, loginAdmin, CreateBatch, getAllBatches };
+export { RegisterAdmin, loginAdmin};

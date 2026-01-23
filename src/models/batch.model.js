@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const batchSchema = new Schema(
   {
-    name: {
+    Name: {
       type: String,
       required: true,
       trim: true, 
