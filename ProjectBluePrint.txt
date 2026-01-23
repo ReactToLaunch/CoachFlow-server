@@ -100,9 +100,9 @@ Fields:
 --------------------------------------------------------------------------------
 
 PHASE 1: THE BACKBONE (Setup & Profiles)
-[*] Setup Folder Structure (MSC Architecture)
-[*] Config MongoDB Connection
-[] API: POST /auth/login (Admin & Student)
+[ ] Setup Folder Structure (MSC Architecture)
+[ ] Config MongoDB Connection
+[ ] API: POST /auth/login (Admin & Student)
 [ ] API: POST /admin/batches (Create Batch)
 [ ] API: POST /admin/students (Create User + Profile)
 [ ] API: GET /student/profile (Fetch My ID Card details)
@@ -143,11 +143,13 @@ PHASE 5: POLISH (The Agency Standard)
 - Notifications: Currently basic FCM. Future: Queue system (BullMQ) for bulk sending.
 - Caching: Future: Redis for caching 'GET /student/profile'.
 
+admin willl create batches 
+TOTAKE: 
+1. batch code : stream : secret code : name  is required false :   
+2. can send notice 
+3. can upload study materials NOTES
+4. can upload results : tests 
+5: manage attendance
 
-
-admin Controllers
-
-Create BAtches:
-
-
-
+6: fees reminder whats ap 
+7: fees and revenue and all should be shown 
