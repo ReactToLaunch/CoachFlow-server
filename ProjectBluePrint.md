@@ -16,7 +16,7 @@
 - [x] **Get All Batches:** (API for Admin Dashboard list)
 - [x] **Get Single Batch:** (API for detailed view/editing)
 - [x] **Update Batch:** (Edit schedule, subjects, etc.)
-- [ ] **Delete Batch:** (Logic to remove batch and handle linked students)
+- [x] **Delete Batch:** (Logic to remove batch and handle linked students)
 
 ### 3. Notices & Communication
 - [x] **Create Notice:** (Save Title/Body to Database)
