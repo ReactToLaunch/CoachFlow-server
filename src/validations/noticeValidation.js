@@ -12,8 +12,8 @@ export const createNoticeSchema = z.object({
     .min(10, "Description is too short, please provide details")
     .trim(),
 
-  category: z.enum(["General", "Exam", "Holiday", "Urgent", "Fee"], {
-    errorMap: () => ({ message: "Category must be one of: General, Exam, Holiday, Urgent, Fee" })
+  type: z.enum(["URGENT", "INFO", "RESULT", "HOLIDAY"], {
+    errorMap: () => ({ message: "Type must be one of: URGENT, INFO, RESULT, HOLIDAY" })
   }),
 
   targetBatches: z
@@ -21,9 +21,9 @@ export const createNoticeSchema = z.object({
     .min(1, "Select at least one batch or choose 'All'")
     .default(["All"]),
 
-  
+
   priority: z.enum(["High", "Medium", "Low"]).default("Medium"),
 
-  
+
   attachmentUrl: z.string().url().optional().or(z.literal("")),
 });

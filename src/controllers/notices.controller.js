@@ -1,90 +1,122 @@
-import { Batch } from "../models/batch.model.js";
 import { Notice } from "../models/notice.model.js";
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { createNoticeSchema } from "../validations/noticeValidation.js";
-import admin from "../config/firebase.js"; 
+import admin from "../config/firebase.js";
+
 
 const createNotice = asyncHandler(async (req, res) => {
-    
-    const result = createNoticeSchema.safeParse(req.body);
+    const notice = createNoticeSchema.safeParse(req.body)
 
-    if (!result.success) {
-        throw new ApiError(400, "Validation Error", result.error.format());
+    if (!notice.success) {
+        throw new ApiError(400, "Invalid notice data")
     }
 
-    const { title, description, category, targetBatches, priority } = result.data; 
+    const { title, content, type, targetBatches, priority, attachmentUrl } = notice.data;
 
-    if (targetBatches && targetBatches.length > 0 && !targetBatches.includes("All")) {
-        const uniqueBatches = [...new Set(targetBatches)];
-        const batchesExist = await Batch.find({ _id: { $in: uniqueBatches } });
+    const finalBatch = targetBatches === "All" ? ["All"] : targetBatches;
 
-        if (batchesExist.length !== uniqueBatches.length) {
-            throw new ApiError(404, "One or more target batches not found");
-        }
-    }
 
-    const typeMapping = {
-        "Urgent": "URGENT",
-        "General": "INFO",
-        "Exam": "RESULT",
-        "Holiday": "HOLIDAY",
-        "Fee": "INFO"
-    };
-
-    const noticeData = {
+    const createdNotice = await Notice.create({
         title,
-        description, 
-        type: typeMapping[category] || "INFO",
-        targetBatches: targetBatches.includes("All") ? [] : targetBatches, 
-        postedBy: req.admin?._id 
-    };
+        content,
+        type,
+        targetBatches: finalBatch,
+        priority,
+        attachmentUrl,
+        postedBy: req.admin?._id
+    })
 
-    const notice = await Notice.create(noticeData);
+    return res.status(201).json(new ApiResponse(201, createdNotice, "Notice created successfully"))
+})
 
-    if (!notice) {
-        throw new ApiError(500, "Failed to create notice");
+
+
+
+// Get all notices for a specific batch (student access)
+const getAllNotices = asyncHandler(async (req, res) => {
+    // Get the authenticated user's ID from the protect middleware
+    const userId = req.user?._id;
+
+    if (!userId) {
+        throw new ApiError(401, "User not authenticated");
     }
 
-    sendPushNotification(notice, targetBatches);
+    // Import StudentProfile model
+    const { StudentProfile } = await import("../models/studentProfile.js");
 
-    const populatedNotice = await Notice.findById(notice._id)
-        .populate('targetBatches', 'name batchcode') 
-        .populate('postedBy', 'Name email'); 
+    // Find the student's profile to get their batch
+    const studentProfile = await StudentProfile.findOne({ user: userId }).select("batch");
 
-    return res.status(201)
-        .json(new ApiResponse(201, { notice: populatedNotice }, "Notice created successfully"));
+    if (!studentProfile) {
+        throw new ApiError(404, "Student profile not found");
+    }
+
+    const studentBatchId = studentProfile.batch;
+
+    // Query notices where targetBatches contains the student's batch ID or "All"
+    // Note: Since the model expects ObjectId array, we need to handle "All" as a special case
+    const notices = await Notice.find({
+        $or: [
+            { targetBatches: studentBatchId },
+            { targetBatches: "All" }
+        ]
+    })
+        .populate("postedBy", "fullName email")
+        .populate("targetBatches", "Name batchcode")
+        .sort({ createdAt: -1 })
+        .lean();
+
+    return res.status(200).json(
+        new ApiResponse(200, notices, "Notices retrieved successfully")
+    );
 });
 
-const sendPushNotification = async (notice, targetBatches) => {
-    try {
-        const messagePayload = {
-            notification: {
-                title: `📢 ${notice.title}`,
-                body: notice.description.substring(0, 50) + "...",
-            },
-            data: {
-                type: "NOTICE",
-                noticeId: notice._id.toString()
-            },
-            android: { priority: "high" }
-        };
+// Get a specific notice by ID (student access)
+const getNoticeById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user?._id;
 
-        if (targetBatches.includes("All")) {
-            await admin.messaging().sendToTopic("ALL_STUDENTS", messagePayload);
-        } else {
-            const batches = await Batch.find({ _id: { $in: targetBatches } });
-            
-            batches.forEach(async (batch) => {
-                
-                const topic = `BATCH_${batch.batchcode.replace(/\s+/g, '_')}`;
-                await admin.messaging().sendToTopic(topic, messagePayload);
-            });
-        }
-    } catch (error) {
-        console.error("❌ Notification Failed:", error);
+    if (!userId) {
+        throw new ApiError(401, "User not authenticated");
     }
-};
+
+    // Import StudentProfile model
+    const { StudentProfile } = await import("../models/studentProfile.js");
+
+    // Find the student's profile to get their batch
+    const studentProfile = await StudentProfile.findOne({ user: userId }).select("batch");
+
+    if (!studentProfile) {
+        throw new ApiError(404, "Student profile not found");
+    }
+
+    const studentBatchId = studentProfile.batch;
+
+    // Find the notice
+    const notice = await Notice.findById(id)
+        .populate("postedBy", "fullName email")
+        .populate("targetBatches", "Name batchcode")
+        .lean();
+
+    if (!notice) {
+        throw new ApiError(404, "Notice not found");
+    }
+
+    // Check if the student has access to this notice
+    const hasAccess = notice.targetBatches.some(
+        batch => batch._id.toString() === studentBatchId.toString() || batch === "All"
+    );
+
+    if (!hasAccess) {
+        throw new ApiError(403, "You don't have access to this notice");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, notice, "Notice retrieved successfully")
+    );
+});
+
 
 export { createNotice, getAllNotices, getNoticeById };
