@@ -70,7 +70,37 @@ return res.status(201)
 
  })
 
+const getTimeTable = asyncHandler(async (req, res) => {
+    
+ const { BatchId } = req.params;
+
+ const timetable = await TimeTable.find({batch: BatchId}).sort({createdAt: -1})
+
+ return res.status(200)
+.json(new ApiResponse(200, {timetable}, "TimeTable fetched successfully"));
+
+}) 
 
 
+const getResult = asyncHandler( async (req, res) => {
+    const studentId = req.user._id;
+    const batchId = req.user.BatchId;
 
- export {SaveResult, SaveTimeTable}
+    const result = await Reault.find({
+        $or: [
+            { type: "COMMON", batch: batchId }, 
+            { type: "INDIVIDUAL", student: studentId } 
+        ]
+    }).sort({ createdAt: -1 });
+
+   if (!result) {
+throw new ApiError(404, "Error while finding Result File")
+   }
+   return res.status(200)
+   .json(
+    new ApiResponse(200, result, "Results fetched successfully")
+   )
+})
+
+
+ export {SaveResult, SaveTimeTable, getTimeTable, getResult}

@@ -22,7 +22,7 @@
 - [x] **Create Notice:** (Save Title/Body to Database)
 - [x] **Push Notification:** (Integration with Firebase to ping devices)
 - [x] **Get Notices (Student Side):** (API for App to fetch student-specific notices)
-- [ ] **Weekly Timetable:** (Upload Image/PDF of schedule for batch) 🆕
+- [x] **Weekly Timetable:** (Upload Image/PDF of schedule for batch) 🆕
 
 ### 4. Attendance System (Critical)
 - [x] **Mark Attendance:** (Controller to mark Present/Absent for an entire batch)
@@ -32,7 +32,7 @@
 ### 5. Performance Module (Test Results) 🆕
 - [ ] **Create Test:** (Admin inputs Test Name, Total Marks, Date)
 - [ ] **Upload Marks:** (Admin inputs marks for student list)
-- [ ] **Get Result (Student):** (View Marks, Rank, and Graph)
+- [x] **Get Result (Student):** (View Marks, Rank, and Graph)
 
 ### 6. Fee Management 🆕
 - [ ] **Set Fee Status:** (Admin marks "Paid", "Pending", "Overdue")
@@ -41,7 +41,7 @@
 
 ### 7. Study Material (Notes)
 - [ ] **Upload PDF/Image:** (Multer + Cloudinary/S3 setup)
-- [ ] **Get Notes:** (API to fetch materials filtered by Subject)
+- [x] **Get Notes:** (API to fetch materials filtered by Subject)
 
 ---
 
