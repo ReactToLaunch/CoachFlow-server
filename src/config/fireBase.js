@@ -15,4 +15,4 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-export const messaging = admin.messaging();
+ export const messaging = admin.messaging();

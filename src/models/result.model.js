@@ -13,7 +13,7 @@ const resultSchema = new Schema(
       required: true,
     },
     testName: {
-      type: String, // e.g., "Physics Unit Test 1"
+      type: String, 
       required: true,
     },
     testDate: {
@@ -32,7 +32,7 @@ const resultSchema = new Schema(
   { timestamps: true }
 );
 
-// Helps fetch all results for a specific student quickly
+
 resultSchema.index({ student: 1, testDate: -1 });
 
 const Result = mongoose.model("Result", resultSchema);
