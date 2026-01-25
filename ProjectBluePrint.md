@@ -21,11 +21,11 @@
 ### 3. Notices & Communication
 - [x] **Create Notice:** (Save Title/Body to Database)
 - [x] **Push Notification:** (Integration with Firebase to ping devices)
-- [ ] **Get Notices (Student Side):** (API for App to fetch student-specific notices)
+- [x] **Get Notices (Student Side):** (API for App to fetch student-specific notices)
 - [ ] **Weekly Timetable:** (Upload Image/PDF of schedule for batch) 🆕
 
 ### 4. Attendance System (Critical)
-- [ ] **Mark Attendance:** (Controller to mark Present/Absent for an entire batch)
+- [x] **Mark Attendance:** (Controller to mark Present/Absent for an entire batch)
 - [ ] **Get Attendance (Student):** (Controller to calculate % for a specific student)
 - [ ] **Get Attendance Report (Admin):** (Controller for monthly reports)
 

@@ -50,6 +50,7 @@ import markAttendenceRouter from "./src/routes/markAttendence.route.js";
 import adminRouter from "./src/routes/admin.route.js";
 import batchesRouter from "./src/routes/batches.route.js";
 import noticesRouter from "./src/routes/notices.route.js";
+import resultRouter from "./src/routes/result.route.js";
 
 
 
@@ -63,6 +64,7 @@ app.use("/api/v1/students", userRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/batches", batchesRouter);
 app.use("/api/v1/notices", noticesRouter);
+app.use("/api/v1/results", resultRouter);
 
 // Export app for testing
 export default app;

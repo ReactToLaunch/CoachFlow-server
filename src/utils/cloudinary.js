@@ -1,5 +1,4 @@
 import {v2 as cloudinary} from 'cloudinary';
-import { log } from 'console';
 import fs from "fs";
 
 cloudinary.config({ 
@@ -17,7 +16,7 @@ cloudinary.config({
     const response = await cloudinary.uploader.upload(localFilePath, {
                 resource_type: "auto"
             })
-    console.log("Image Uploaded Sucessfully", response.url);
+    console.log("File Uploaded Sucessfully", response.url);
 
       return response
 
