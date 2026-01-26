@@ -30,11 +30,11 @@ export const UserRegisterValidationSchema = z.object({
     .trim()
     .toUpperCase(), 
   selectedRole: z
-    .enum(["student", "admin", "teacher"], { 
-      errorMap: () => ({ message: "Role must be 'student', 'admin', or 'teacher'" }) 
+    .enum(["student", "teacher"], { 
+      errorMap: () => ({ message: "Role must be 'student' or 'teacher'" }) 
     })
-    .default("student")
-
+    .default("student"),
+  BatchId: z.string().optional()
 }) 
 
 export const loginStudentSchema = z.object({

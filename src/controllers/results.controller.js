@@ -1,5 +1,5 @@
-import { Reault } from "../models/result.model";
-import { TimeTable } from "../models/timetable.model";
+import { Result } from "../models/result.model.js";
+import { TimeTable } from "../models/timetable.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -27,7 +27,7 @@ if (!uploadedFile) {
 const { title, BatchId } = req.body;
 
 
-const result = await Reault.create({
+const result = await Result.create({
 title,
 batch: BatchId,
 fileUrl: uploadedFile.url,

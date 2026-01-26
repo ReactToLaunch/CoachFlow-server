@@ -4,8 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Otp } from "../models/otp.model.js";
 import { sendEmail, generateOtp } from "../utils/generateOtp.js";
-import { UserRegisterValidationSchema, loginStudentSchema} from "../validations/userValidation.js"
-
+import { UserRegisterValidationSchema, loginStudentSchema} from "../validations/userValidation.js";
+import { Batch } from "../models/batch.model.js"
 
 const generateAccessAndRefreshTokens = async(userId) => {
   try {
@@ -32,6 +32,7 @@ const generateAccessAndRefreshTokens = async(userId) => {
 const registerUser = asyncHandler( async (req, res) => {
     
   const result = UserRegisterValidationSchema.safeParse(req.body);
+   
 
 
     if (!result.success) {
@@ -48,17 +49,37 @@ const registerUser = asyncHandler( async (req, res) => {
       phone, 
       password, 
       EnrollmentNumber, 
-      selectedRole 
+      selectedRole,
+      BatchId
     } = result.data;
-    
+
+
     const exixteduser = await User.findOne({
         $or: [{email}, {EnrollmentNumber}]
     })
 
-
+   if (selectedRole === "admin") {
+    throw new ApiError(403, "Ladle! Ayese kayse Admin banne denge")
+   }
 
 if (exixteduser) {
     throw new ApiError(400, "User Already Exixt")
+}
+
+let BatchObjectId = null
+const validBatchId = await Batch.findById(BatchId)
+
+if (selectedRole === "student") {
+  if (!BatchId) {
+    throw new ApiError(401, "BatchId is required for Students")
+  }
+
+  
+  if (!validBatchId) {
+            throw new ApiError(404, "Invalid Batch Selected");
+        }
+
+   BatchObjectId = validBatchId._id;
 }
 
 const user = await User.create({
@@ -67,8 +88,17 @@ const user = await User.create({
     email,
     EnrollmentNumber,
     phone,
-    selectedRole
+    selectedRole,
+    batch: BatchObjectId, 
+    selectedRole: selectedRole
 })
+
+// 5. Update Batch (Only for Students)
+    if (selectedRole === "student" && BatchObjectId) {
+        await Batch.findByIdAndUpdate(BatchObjectId, {
+            $push: { students: user._id }
+        });
+    }
 
 const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -314,7 +344,7 @@ const SaveFcmToken = asyncHandler( async (req, res) => {
     throw new ApiError(500, "Did not recieve FCM Token")
   }
 
-    const token = User.findByIdAndUpdate(req.user._id, {fcmToken})
+    const token = await User.findByIdAndUpdate(req.user._id, {fcmToken})
 
     if (!token) {
       throw new ApiError(401, "Unable to Save FCM Token")

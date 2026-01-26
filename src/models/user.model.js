@@ -1,6 +1,12 @@
 import mongoose, {Schema} from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+
+
+
+dotenv.config()
 
 
 const userSchema = new Schema(
@@ -26,6 +32,11 @@ const userSchema = new Schema(
    trim: true,
    lowercase: true,
    },
+   batch: {
+            type: Schema.Types.ObjectId,
+            ref: "Batch",
+            
+        },
 
    isVerified: {
     type: Boolean,
@@ -39,8 +50,13 @@ const userSchema = new Schema(
   },
   phone: {
     type: String,
-    unique: true
+    unique: true,
+    sparse: true
   },
+  avatar: {
+            type: String, 
+            default: ""
+        },
   selectedRole: {
     type: String,
     required: true,
@@ -76,7 +92,9 @@ userSchema.methods.generateAccessToken = function () {
     {
       _id: this._id,
       fullName: this.fullName,
-      email: this.email
+      email: this.email,
+      role: this.selectedRole,
+      batch: this.batch
 
     },
     process.env.ACCESS_TOKEN_SECRET,
