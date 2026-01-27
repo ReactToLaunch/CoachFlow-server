@@ -4,11 +4,9 @@ import { protectAdmin, protect } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-// Student routes - get notices for their batch
-router.route("/").get(protect, getAllNotices);
-router.route("/:id").get(protect, getNoticeById);
 
-// Admin routes - create notices
+router.route("/getNotices").get(protect, getAllNotices);
+router.route("/getNoticesById/:id").get(protect, getNoticeById);
 router.route("/create").post(protectAdmin, createNotice);
 
 
