@@ -23,7 +23,7 @@ const transactionSchema = new Schema({
     },
     collectedBy: {
         type: Schema.Types.ObjectId,
-        ref: "User" 
+        ref: "Admin" 
     }
 });
 
