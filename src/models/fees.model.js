@@ -84,23 +84,23 @@ const feeSchema = new Schema(
 
 
 feeSchema.pre("save", function (next) {
-    // 1. Calculate Final Total
+    
     this.finalAmount = this.totalFees - this.discount;
 
-    // 2. Calculate Pending
+    
     this.pendingAmount = this.finalAmount - this.paidAmount;
 
-    // 3. Update Status
+   
     if (this.pendingAmount <= 0) {
         this.status = "PAID";
-        this.pendingAmount = 0; // Safety clamp
+        this.pendingAmount = 0; 
     } else if (this.paidAmount > 0) {
         this.status = "PARTIAL";
     } else {
         this.status = "PENDING";
     }
 
-    // 4. Check Overdue (If pending > 0 AND date passed)
+    
     if (this.pendingAmount > 0 && new Date() > this.nextDueDate) {
         this.status = "OVERDUE";
     }

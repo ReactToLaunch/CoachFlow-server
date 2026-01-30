@@ -69,6 +69,9 @@ export const protectAdmin = async (req, res, next) => {
   if (!token) {
     throw new Error("Not authorized, no admin token");
   }
+ console.log("Admin verified !");
+ 
+
 };
 
 

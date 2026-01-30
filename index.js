@@ -51,6 +51,7 @@ import adminRouter from "./src/routes/admin.route.js";
 import batchesRouter from "./src/routes/batches.route.js";
 import noticesRouter from "./src/routes/notices.route.js";
 import resultRouter from "./src/routes/result.route.js";
+import feesRouter from "./src/routes/fees.route.js";
 
 
 
@@ -65,6 +66,7 @@ app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/batches", batchesRouter);
 app.use("/api/v1/notices", noticesRouter);
 app.use("/api/v1/results", resultRouter);
+app.use("/api/v1/fees", feesRouter);
 
 // Export app for testing
 export default app;

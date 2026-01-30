@@ -15,10 +15,18 @@ const RegisterAdmin = asyncHandler( async (req, res) => {
 
     const result = RegisterAdminSchema.safeParse(req.body);
 
-    
     if (!result.success) {
-     throw new ApiError(400, "Validation Error", result.error.format());
+        
+        const errorMessages = result.error.flatten().fieldErrors;
+        
+        console.log("Validation Errors:", errorMessages); 
+
+        
+        const firstError = result.error.errors[0].message;
+        
+        throw new ApiError(400, firstError);
     }
+  
 
     const { Name, email, password, secretKey } = result.data;
 
@@ -56,7 +64,15 @@ const loginAdmin = asyncHandler( async (req, res) => {
     const result = loginAdminSchema.safeParse(req.body);
 
     if (!result.success) {
-      throw new ApiError(400, "Validation Error", result.error.format());
+        
+        const errorMessages = result.error.flatten().fieldErrors;
+        
+        console.log("Validation Errors:", errorMessages); 
+
+        
+        const firstError = result.error.errors[0].message;
+        
+        throw new ApiError(400, firstError);
     }
 
     const { email, password } = result.data;
