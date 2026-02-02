@@ -26,21 +26,21 @@
 
 ### 4. Attendance System (Critical)
 - [x] **Mark Attendance:** (Controller to mark Present/Absent for an entire batch)
-- [ ] **Get Attendance (Student):** (Controller to calculate % for a specific student)
-- [ ] **Get Attendance Report (Admin):** (Controller for monthly reports)
+- [x] **Get Attendance (Student):** (Controller to calculate % for a specific student)
+- [x] **Get Attendance Report (Admin):** (Controller for monthly reports)
 
-### 5. Performance Module (Test Results) 🆕
+### 5. Performance Module(Test Results) 🆕 This will be built on Demand
 - [ ] **Create Test:** (Admin inputs Test Name, Total Marks, Date)
 - [ ] **Upload Marks:** (Admin inputs marks for student list)
 - [x] **Get Result (Student):** (View Marks, Rank, and Graph)
 
 ### 6. Fee Management 🆕
-- [ ] **Set Fee Status:** (Admin marks "Paid", "Pending", "Overdue")
-- [ ] **Fee Reminder:** (Auto-notification if status is "Overdue")
-- [ ] **Get Fee Status (Student):** (Show Red/Green banner on Home Screen)
+- [x] **Set Fee Status:** (Admin marks "Paid", "Pending", "Overdue")
+- [x] **Fee Reminder:** (Auto-notification if status is "Overdue")
+- [x] **Get Fee Status (Student):** (Show Red/Green banner on Home Screen)
 
 ### 7. Study Material (Notes)
-- [ ] **Upload PDF/Image:** (Multer + Cloudinary/S3 setup)
+- [x] **Upload PDF/Image:** (Multer + Cloudinary/S3 setup)
 - [x] **Get Notes:** (API to fetch materials filtered by Subject)
 
 ---

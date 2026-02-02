@@ -1,7 +1,18 @@
 import express from "express"
 import ConnectDb from "./src/config/db.js"
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
+// Security Imports
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import mongoSanitize from "express-mongo-sanitize";
+import hpp from "hpp"
 import cors from "cors";
+import { sanitizeInput } from "./src/middlewares/sanitizer.js";
+
+ 
+
 
 
 
@@ -11,7 +22,40 @@ dotenv.config({
 })
 
 
-const app = express()
+const app = express();
+
+app.use(helmet());
+
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:8000", 
+    credentials: true, 
+    optionsSuccessStatus: 200
+}));
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 100, 
+    message: "Too many requests from this IP, please try again after 15 minutes"
+});
+app.use("/api", limiter);
+
+// D. Data Sanitization (NoSQL Injection)
+// Converts user input like { "$gt": "" } to simple strings
+app.use(mongoSanitize());
+
+app.use(sanitizeInput);   
+
+// F. Prevent Parameter Pollution
+// Cleans up duplicate query parameters
+app.use(hpp());
+
+// ==========================================
+// 2. STANDARD MIDDLEWARE
+// ==========================================
+app.use(express.json({ limit: "16kb" })); // Limit body size to prevent DoS
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.static("public"));
+app.use(cookieParser());
 
 app.use(express.json());
 app.use((err, req, res, next) => {

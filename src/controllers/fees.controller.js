@@ -3,7 +3,8 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { assignFeeSchema, collectFeeSchema } from "../validations/fees.validation.js";
-import { Admin } from "../models/admin.model.js";
+import { sendEmail } from "../utils/EmailService.js";
+import { generateReceipt } from "../utils/receiptGenerator.js";
 
 
 
@@ -70,7 +71,12 @@ const collectFee = asyncHandler(async (req, res) => {
     const { studentId, amount, paymentMode, transactionId, nextDueDate } = paymentData.data;
 
    
-    const feeRecord = await Fee.findOne({ student: studentId });
+    const feeRecord = await Fee.findOne({ student: studentId })
+    .populate("student", "fullName email")
+    .populate("batchcode", "name");
+
+ 
+     console.log("DEBUG STUDENT:", feeRecord.student);
 
     if (!feeRecord) {
         throw new ApiError(404, "Fee record not found. Please assign fees first.");
@@ -108,6 +114,39 @@ const collectFee = asyncHandler(async (req, res) => {
 
     
     await feeRecord.save();
+
+    // E-recipt generation
+
+   
+
+try {
+    
+    const pdfBuffer = await generateReceipt(
+        newTransaction, 
+        feeRecord.student, 
+        feeRecord.batchcode
+    );
+
+    
+    await sendEmail(
+        feeRecord.student.email,                 
+        "Fee Payment Receipt - Solvify",         
+        `<p>Dear ${feeRecord.student.fullName},</p>
+         <p>We have received your payment of <b>₹${newTransaction.amount}</b>.</p>
+         <p>Please find the receipt attached.</p>`,
+        [
+            {
+                filename: `Receipt-${newTransaction.transactionId}.pdf`, 
+                content: pdfBuffer 
+            }
+        ]
+    );
+
+} catch (error) {
+    console.error("Receipt Email Failed:", error);
+    
+}
+
 
     return res.status(200).json(
         new ApiResponse(200, feeRecord, "Payment collected successfully")
