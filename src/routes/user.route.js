@@ -1,5 +1,5 @@
-import {Router} from "express";
-import { registerUser, loginUser,Otpgenerate, verifyOtp, resetPassword, SaveFcmToken} from "../controllers/user.controller.js";
+import { Router } from "express";
+import { registerUser, loginUser, Otpgenerate, verifyOtp, resetPassword, SaveFcmToken } from "../controllers/user.controller.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
 const router = Router()

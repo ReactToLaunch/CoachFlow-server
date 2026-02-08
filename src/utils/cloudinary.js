@@ -1,5 +1,6 @@
 import {v2 as cloudinary} from 'cloudinary';
 import fs from "fs";
+import { ApiError } from './ApiError.js';
 
 cloudinary.config({ 
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
@@ -21,8 +22,13 @@ cloudinary.config({
       return response
 
        } catch (error) {
-        fs.unlink(localFilePath)  // remove the temperaraly saved file if it failed to be uploaded
-        return null
+        if (fs.existsSync(localFilePath)) {
+    fs.unlink(localFilePath, (err) => {
+      if (err) console.error("Failed to delete temp file:", err);
+    });
+  }
+  throw new ApiError(500, "File upload failed");
+        
        }
 
 

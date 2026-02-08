@@ -29,47 +29,128 @@
 - [x] **Get Attendance (Student):** (Controller to calculate % for a specific student)
 - [x] **Get Attendance Report (Admin):** (Controller for monthly reports)
 
-### 5. Performance Module(Test Results) 🆕 This will be built on Demand
-- [ ] **Create Test:** (Admin inputs Test Name, Total Marks, Date)
-- [ ] **Upload Marks:** (Admin inputs marks for student list)
-- [x] **Get Result (Student):** (View Marks, Rank, and Graph)
+### 5. Fee Management (The "Asset" Feature) 🆕
+- [x] **Assign Fees:** (Associate fee structure with students)
+- [x] **Collect Fee:** (Logic to accept payment and update ledger)
+- [x] **Get Defaulters:** (Filter students by "Overdue" status)
+- [x] **Get Fee History:** (Student-specific view of transactions)
 
-### 6. Fee Management 🆕
-- [x] **Set Fee Status:** (Admin marks "Paid", "Pending", "Overdue")
-- [x] **Fee Reminder:** (Auto-notification if status is "Overdue")
-- [x] **Get Fee Status (Student):** (Show Red/Green banner on Home Screen)
-
-### 7. Study Material (Notes)
+### 6. Study Material (Notes)
 - [x] **Upload PDF/Image:** (Multer + Cloudinary/S3 setup)
 - [x] **Get Notes:** (API to fetch materials filtered by Subject)
 
 ---
 
-## Phase 2: Admin Website (React / Next.js)
-*The Control Center for Teachers/Admins.*
+## Phase 2: Admin Website (Next.js + Tailwind)
+*The Control Center. Built for Speed, Finance Tracking, and Security.*
 
-### 1. Core UI
-- [ ] **Login Screen:** (Email/Password)
-- [ ] **Dashboard Home:** (Stats: Total Students, Batches, Fees Pending)
+### 1. Architecture & Tech Stack
+- [ ] **Framework:** Next.js 14+ (App Router)
+- [ ] **Styling:** Tailwind CSS + Shadcn/UI (Components)
+- [ ] **State Management:** Zustand (User Session & Sidebar State)
+- [ ] **Data Fetching:** TanStack Query (React Query) - *Best for client-side dashboards*
+- [ ] **Icons:** Lucide React
 
-### 2. Management Modules
-- [ ] **Batch Manager:** (Create/Edit Batches)
-- [ ] **Student List:** (View students, Verify users, Check Fee Status)
-- [ ] **Attendance Interface:** (Date picker + Student list with checkboxes)
-- [ ] **Result Portal:** (Form to enter marks for tests) 🆕
+### 2. Core UI & Security
+- [ ] **Middleware Protection:** (Next.js Middleware to check JWT cookies and redirect unauthenticated users)
+- [ ] **Axios Instance:** (Centralized API client with interceptors for auto-attaching tokens)
+- [ ] **Auth Context:** (Global provider to handle Login/Logout state)
+- [ ] **Layout Architecture:** (`layout.tsx` for the persistent Sidebar and Header)
 
+### 3. Dashboard (The "Command Center") - `/dashboard`
+- [ ] **Revenue Cards:** (Total Collected, Total Pending, Monthly Growth)
+- [ ] **Live Feed:** (Real-time log of "Fee Collected" or "Notice Sent")
+- [ ] **Quick Actions:** (Floating buttons for "Take Attendance" and "Collect Fee")
+- [ ] **Defaulter Widget:** (Top 5 students with overdue fees)
+
+### 4. Fee Management Module - `/dashboard/fees`
+- [ ] **Fee Ledger Table:** (Columns: Name, Batch, Total, Paid, Pending, Status)
+- [ ] **Collect Fee Modal:** (Input Amount -> Select Mode -> **Generate WhatsApp Link**)
+- [ ] **Transaction History:** (View all past payments with Dates)
+- [ ] **Defaulter Filter:** (One-click view of all "Overdue" students)
+
+### 5. Attendance & Batches - `/dashboard/attendance` & `/dashboard/batches`
+- [ ] **Attendance Interface:** (Grid view with "Select All" / "Invert Selection" for speed)
+- [ ] **Batch Scheduler:** (Visual tool to upload Timetable images)
+- [ ] **Student Directory:** (Searchable list with Edit/Delete options)
 ---
 
 ## Phase 3: Mobile App (React Native + Expo)
 *The Student Interface.*
 
 ### 1. Onboarding
-- [ ] **Splash Screen:** (Branding)
+- [ ] **Splash Screen:** (Branding: "CoachFlow by ReactToLaunch")
 - [ ] **Signup Flow:** (Name, Email, Pass, Parents Phone, **Batch Code**)
 - [ ] **Login Flow:** (JWT storage in SecureStore)
 
 ### 2. Core Features
-- [ ] **Home Tab:** (Notices, Fee Status Banner, Timetable)
+- [ ] **Home Tab:** (Notices, Fee Status Banner (Red/Green), Timetable)
 - [ ] **Attendance Tab:** (Calendar view & Percentage stats)
-- [ ] **Results Tab:** (Test Scores, Ranks) 🆕
 - [ ] **Profile Tab:** (User details, Logout)
+
+### 3. Future Updates (Post-MVP)
+- [ ] **Results Tab:** (Test Scores, Ranks - *Deferred as per strategy*)
+
+
+admin-panel/
+├── public/                 # Static images (Logo, favicon)
+├── src/
+│   ├── app/                # 🚀 The Pages (Routes)
+│   │   ├── (auth)/         # Route Group (No Sidebar here)
+│   │   │   └── login/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── (dashboard)/    # Route Group (Has Sidebar & Navbar)
+│   │   │   ├── layout.tsx  # 🛡️ THE SHELL (Sidebar + Header live here)
+│   │   │   ├── page.tsx    # (Home) - The Stats Dashboard
+│   │   │   ├── fees/
+│   │   │   │   └── page.tsx
+│   │   │   ├── attendance/
+│   │   │   │   └── page.tsx
+│   │   │   ├── batches/
+│   │   │   │   └── page.tsx
+│   │   │   └── students/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── layout.tsx      # Root Layout (Providers wrapper)
+│   │   └── globals.css     # Tailwind imports
+│   │
+│   ├── components/         # 🧩 The Building Blocks
+│   │   ├── ui/             # Shadcn UI (Button, Input, Card, Table...)
+│   │   │
+│   │   ├── layout/         # App Shell Components
+│   │   │   ├── Sidebar.tsx
+│   │   │   └── Header.tsx
+│   │   │
+│   │   ├── fees/           # 💰 Fee Specific Components
+│   │   │   ├── FeeTable.tsx
+│   │   │   ├── CollectFeeModal.tsx  # 👈 WhatsApp Logic goes here
+│   │   │   └── DefaulterWidget.tsx
+│   │   │
+│   │   ├── attendance/     # 📅 Attendance Components
+│   │   │   └── AttendanceGrid.tsx
+│   │   │
+│   │   └── shared/         # Reusable across pages
+│   │       ├── PageHeader.tsx
+│   │       └── StatusBadge.tsx
+│   │
+│   ├── lib/                # ⚙️ Configuration
+│   │   ├── axios.ts        # The Axios Instance (Auto-attaches Token)
+│   │   └── utils.ts        # Tailwind helper (cn)
+│   │
+│   ├── services/           # 📡 API Calls (Separation of Concerns)
+│   │   ├── auth.service.ts
+│   │   ├── fee.service.ts
+│   │   └── batch.service.ts
+│   │
+│   ├── store/              # 🏪 State Management (Zustand)
+│   │   └── useAuthStore.ts # Stores user, token, isAuthenticated
+│   │
+│   ├── hooks/              # 🪝 Custom Hooks (React Query)
+│   │   ├── useFees.ts      # useQuery logic for fetching fees
+│   │   └── useBatches.ts
+│   │
+│   └── middleware.ts       # 🔒 Security Guard (Protects routes)
+│
+├── .env.local              # Environment variables (API URL)
+└── next.config.js

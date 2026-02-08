@@ -22,7 +22,11 @@ const adminSchema = new Schema(
     Name: {
       type: String,
       default: "Super Admin",
-    }
+    },
+    isVerified: {
+    type: Boolean,
+    default: false,
+   },
   },
   { timestamps: true }
 );

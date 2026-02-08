@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { Admin } from "../models/admin.model.js"; 
 import { th } from "zod/locales";
+import { ApiError } from "../utils/ApiError.js";
 
 
 export const protect = async (req, res, next) => {
@@ -23,18 +24,18 @@ export const protect = async (req, res, next) => {
       req.user = await User.findById(decoded._id).select("-password");
 
       if (!req.user) {
-        throw new Error("Not authorized, user not found");
+        throw new ApiError(401, "Not authorized, user not found");
       }
 
       next(); 
     } catch (error) {
       console.error(error);
-      throw new Error("Not authorized, token failed");
+      throw new ApiError(401, "Not authorized, token failed");
     }
   }
 
   if (!token) {
-    throw new Error("Not authorized, no token");
+    throw new ApiError(401, "Not authorized, no token");
   }
 };
 
@@ -56,18 +57,18 @@ export const protectAdmin = async (req, res, next) => {
       req.admin = await Admin.findById(decoded._id).select("-password");
 
       if (!req.admin) {
-        throw new Error("Not authorized, admin not found");
+        throw new ApiError(401, "Not authorized, admin not found");
       }
 
       next();
     } catch (error) {
       console.error(error);
-      throw new Error("Not authorized, admin token failed");
+      throw new ApiError(401, "Not authorized, admin token failed");
     }
   }
 
   if (!token) {
-    throw new Error("Not authorized, no admin token");
+    throw new ApiError(401, "Not authorized, no admin token");
   }
  console.log("Admin verified !");
  
