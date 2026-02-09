@@ -43,8 +43,7 @@ const studyMaterialSchema = new Schema(
     { timestamps: true }
 );
 
-// 🚀 PERFORMANCE BOOSTER
-// This ensures that queries like "Find Physics notes for Batch A" are lightning fast.
+
 studyMaterialSchema.index({ batch: 1, subject: 1 });
 
 export const StudyMaterial = mongoose.model("StudyMaterial", studyMaterialSchema);

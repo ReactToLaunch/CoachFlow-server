@@ -30,7 +30,7 @@ const pendingAuthSchema = new mongoose.Schema({
     expiresAt: {
         type: Date,
         required: true,
-        index: { expires: 0 } // TTL index - MongoDB will auto-delete when expired
+        index: { expires: 0 } 
     },
     createdAt: {
         type: Date,

@@ -1,7 +1,7 @@
 import sanitizeHtml from 'sanitize-html';
 
 export const sanitizeInput = (req, res, next) => {
-    // Helper function to sanitize a value
+    
     const sanitize = (obj) => {
         for (const key in obj) {
             if (typeof obj[key] === 'string') {
@@ -10,7 +10,7 @@ export const sanitizeInput = (req, res, next) => {
                     allowedAttributes: {}
                 });
             } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-                sanitize(obj[key]); // Recurse into nested objects
+                sanitize(obj[key]); 
             }
         }
     };

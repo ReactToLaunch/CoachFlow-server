@@ -28,15 +28,13 @@ dotenv.config({
 
 const app = express();
 
-// ==========================================
-// 1. SECURITY MIDDLEWARE
-// ==========================================
+
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-// ✅ CORS Configuration (Only define this ONCE)
+
 const corsOptions = {
-  // Make sure your .env has CORS_ORIGIN=http://localhost:3000
+
   origin: process.env.CORS_ORIGIN || "http://localhost:3000",
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -59,14 +57,14 @@ const limiter = rateLimit({
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10, // Increased slightly for testing
+  max: 10, 
   message: "Too many authentication attempts, please try again later"
 });
 
-// Admin 2FA Rate Limiter (stricter)
+
 const admin2FALimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5, // Max 5 OTP generation attempts per 15 minutes
+  max: 5, 
   message: "Too many OTP requests. Please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -77,16 +75,14 @@ app.use(mongoSanitize());
 app.use(sanitizeInput);
 app.use(hpp());
 
-// ==========================================
-// 2. STANDARD MIDDLEWARE
-// ==========================================
-// Only need to declare these ONCE
+
+
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// Error Handling for Bad JSON
+
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     console.error('❌ JSON Parse Error:', err.message);
@@ -95,15 +91,12 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// ❌ DELETED: app.use(cors());  <-- This was breaking your app!
+
 
 app.get("/", (req, res) => {
   res.send("API is Running....");
 });
 
-// ==========================================
-// 3. DATABASE & SERVER
-// ==========================================
 ConnectDb()
   .then(() => {
     app.listen(process.env.PORT || 8000, () => {
@@ -114,12 +107,9 @@ ConnectDb()
     console.log("DataBase Connection Failed", error);
   });
 
-// ==========================================
-// 4. ROUTES
-// ==========================================
-// Note: Put 'limiter' BEFORE the 'router' to actually protect the route
+
 app.use("/api/v1/users", authLimiter, userRouter);
-app.use("/api/v1/users", authLimiter, otpRouter); // Check if this path shouldn't be unique
+app.use("/api/v1/users", authLimiter, otpRouter); 
 app.use("/api/v1/attendence", limiter, markAttendenceRouter);
 app.use("/api/v1/students", limiter, userRouter);
 app.use("/api/v1/admin", authLimiter, adminRouter);
