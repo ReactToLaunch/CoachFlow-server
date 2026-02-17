@@ -22,14 +22,14 @@
 - [x] **Create Notice:** (Save Title/Body to Database)
 - [x] **Push Notification:** (Integration with Firebase to ping devices)
 - [x] **Get Notices (Student Side):** (API for App to fetch student-specific notices)
-- [x] **Weekly Timetable:** (Upload Image/PDF of schedule for batch) 🆕
+- [x] **Weekly Timetable:** (Upload Image/PDF of schedule for batch) 
 
 ### 4. Attendance System (Critical)
 - [x] **Mark Attendance:** (Controller to mark Present/Absent for an entire batch)
 - [x] **Get Attendance (Student):** (Controller to calculate % for a specific student)
 - [x] **Get Attendance Report (Admin):** (Controller for monthly reports)
 
-### 5. Fee Management (The "Asset" Feature) 🆕
+### 5. Fee Management (The "Asset" Feature) 
 - [x] **Assign Fees:** (Associate fee structure with students)
 - [x] **Collect Fee:** (Logic to accept payment and update ledger)
 - [x] **Get Defaulters:** (Filter students by "Overdue" status)
@@ -95,13 +95,13 @@
 admin-panel/
 ├── public/                 # Static images (Logo, favicon)
 ├── src/
-│   ├── app/                # 🚀 The Pages (Routes)
+│   ├── app/                #  The Pages (Routes)
 │   │   ├── (auth)/         # Route Group (No Sidebar here)
 │   │   │   └── login/
 │   │   │       └── page.tsx
 │   │   │
 │   │   ├── (dashboard)/    # Route Group (Has Sidebar & Navbar)
-│   │   │   ├── layout.tsx  # 🛡️ THE SHELL (Sidebar + Header live here)
+│   │   │   ├── layout.tsx  #  THE SHELL (Sidebar + Header live here)
 │   │   │   ├── page.tsx    # (Home) - The Stats Dashboard
 │   │   │   ├── fees/
 │   │   │   │   └── page.tsx
@@ -115,42 +115,42 @@ admin-panel/
 │   │   ├── layout.tsx      # Root Layout (Providers wrapper)
 │   │   └── globals.css     # Tailwind imports
 │   │
-│   ├── components/         # 🧩 The Building Blocks
+│   ├── components/         #  The Building Blocks
 │   │   ├── ui/             # Shadcn UI (Button, Input, Card, Table...)
 │   │   │
 │   │   ├── layout/         # App Shell Components
 │   │   │   ├── Sidebar.tsx
 │   │   │   └── Header.tsx
 │   │   │
-│   │   ├── fees/           # 💰 Fee Specific Components
+│   │   ├── fees/           #  Fee Specific Components
 │   │   │   ├── FeeTable.tsx
-│   │   │   ├── CollectFeeModal.tsx  # 👈 WhatsApp Logic goes here
+│   │   │   ├── CollectFeeModal.tsx  #  WhatsApp Logic goes here
 │   │   │   └── DefaulterWidget.tsx
 │   │   │
-│   │   ├── attendance/     # 📅 Attendance Components
+│   │   ├── attendance/     #  Attendance Components
 │   │   │   └── AttendanceGrid.tsx
 │   │   │
 │   │   └── shared/         # Reusable across pages
 │   │       ├── PageHeader.tsx
 │   │       └── StatusBadge.tsx
 │   │
-│   ├── lib/                # ⚙️ Configuration
+│   ├── lib/                #  Configuration
 │   │   ├── axios.ts        # The Axios Instance (Auto-attaches Token)
 │   │   └── utils.ts        # Tailwind helper (cn)
 │   │
-│   ├── services/           # 📡 API Calls (Separation of Concerns)
+│   ├── services/           #  API Calls (Separation of Concerns)
 │   │   ├── auth.service.ts
 │   │   ├── fee.service.ts
 │   │   └── batch.service.ts
 │   │
-│   ├── store/              # 🏪 State Management (Zustand)
+│   ├── store/              #  State Management (Zustand)
 │   │   └── useAuthStore.ts # Stores user, token, isAuthenticated
 │   │
-│   ├── hooks/              # 🪝 Custom Hooks (React Query)
+│   ├── hooks/              #  Custom Hooks (React Query)
 │   │   ├── useFees.ts      # useQuery logic for fetching fees
 │   │   └── useBatches.ts
 │   │
-│   └── middleware.ts       # 🔒 Security Guard (Protects routes)
+│   └── middleware.ts       #  Security Guard (Protects routes)
 │
 ├── .env.local              # Environment variables (API URL)
 └── next.config.js

@@ -152,8 +152,6 @@ const generateAdminOtp = asyncHandler(async (req, res) => {
     });
 
    
-    // just for the dev, and has to be removed when deploying
-    console.log(`OTP generated for admin ${email}: ${otp}`); 
 
     return res.status(200).json(
         new ApiResponse(200, {

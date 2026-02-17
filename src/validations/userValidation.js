@@ -34,7 +34,7 @@ export const UserRegisterValidationSchema = z.object({
       errorMap: () => ({ message: "Role must be 'student' or 'teacher'" }) 
     })
     .default("student"),
-  BatchId: z.string().optional()
+  BatchId: z.string()
 }) 
 
 export const loginStudentSchema = z.object({

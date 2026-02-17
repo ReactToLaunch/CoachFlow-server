@@ -132,32 +132,32 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, EnrollmentNumber, password } = result.data;
 
 
-  // checking all fields are provided
+  
   if ([email, EnrollmentNumber, password].some((field) => field?.trim() === "")) {
     throw new ApiError(401, "all Fields are required")
   }
 
-  // checking user is registered or not
+  
   const user = await User.findOne({
     $or: [{ email }, { EnrollmentNumber }]
   })
 
-  // if user not found
+  
   if (!user) {
     throw new ApiError(401, "User not registered Please Register First")
   }
 
-  // validating password
+  
   const isPasswordCorrect = await user.validatePassword(password);
 
   if (!isPasswordCorrect) {
     throw new ApiError(401, "Invalid password")
   }
 
-  // generating access token and refresh token
+  
   const { refreshToken, accessToken } = await generateAccessAndRefreshTokens(user._id);
 
-  // fetching logged in user data without password and refresh token
+ 
 
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -168,10 +168,6 @@ const loginUser = asyncHandler(async (req, res) => {
     secure: true
   }
 
-
-
-
-  // sending response
   return res.status(200)
     .cookie("refreshToken", refreshToken, options)
     .cookie("accessToken", accessToken, options)
