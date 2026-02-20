@@ -33,20 +33,20 @@ app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 
-const corsOptions = {
+// const corsOptions = {
 
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'X-Content-Type-Options'
-  ],
-};
+//   origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//   allowedHeaders: [
+//     'Content-Type',
+//     'Authorization',
+//     'X-Requested-With',
+//     'X-Content-Type-Options'
+//   ],
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // Rate Limiters
 const limiter = rateLimit({
