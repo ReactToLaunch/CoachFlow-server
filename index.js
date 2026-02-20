@@ -29,8 +29,8 @@ dotenv.config({
 const app = express();
 
 
-app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+// app.use(helmet());
+// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 
 // const corsOptions = {
@@ -108,7 +108,7 @@ ConnectDb()
   });
 
 
-app.use("/api/v1/users", authLimiter, userRouter);
+app.use("/api/v1/users", userRouter);
 app.use("/api/v1/users", authLimiter, otpRouter); 
 app.use("/api/v1/attendence", limiter, markAttendenceRouter);
 app.use("/api/v1/students", limiter, userRouter);
