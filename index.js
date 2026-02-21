@@ -4,12 +4,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 // Security Imports
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
-import mongoSanitize from "express-mongo-sanitize";
-import hpp from "hpp";
-import cors from "cors";
-import { sanitizeInput } from "./src/middlewares/sanitizer.js";
+// import helmet from "helmet";
+// import rateLimit from "express-rate-limit";
+// import mongoSanitize from "express-mongo-sanitize";
+// import hpp from "hpp";
+// import cors from "cors";
+// import { sanitizeInput } from "./src/middlewares/sanitizer.js";
 
 // Routes
 import userRouter from './src/routes/user.route.js';
@@ -49,31 +49,31 @@ const app = express();
 // app.use(cors(corsOptions));
 
 // Rate Limiters
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50,
-  message: "Too many requests from this IP, please try again after 15 minutes"
-});
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 50,
+//   message: "Too many requests from this IP, please try again after 15 minutes"
+// });
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10, 
-  message: "Too many authentication attempts, please try again later"
-});
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 10, 
+//   message: "Too many authentication attempts, please try again later"
+// });
 
 
-const admin2FALimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5, 
-  message: "Too many OTP requests. Please try again later.",
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// const admin2FALimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 5, 
+//   message: "Too many OTP requests. Please try again later.",
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
 // Data Sanitization
-app.use(mongoSanitize());
-app.use(sanitizeInput);
-app.use(hpp());
+// app.use(mongoSanitize());
+// app.use(sanitizeInput);
+// app.use(hpp());
 
 
 
@@ -85,7 +85,7 @@ app.use(cookieParser());
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    console.error('❌ JSON Parse Error:', err.message);
+    console.error(' JSON Parse Error:', err.message);
     return res.status(400).json({ success: false, message: 'Invalid JSON payload sent' });
   }
   next();
@@ -109,14 +109,14 @@ ConnectDb()
 
 
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/users", authLimiter, otpRouter); 
-app.use("/api/v1/attendence", limiter, markAttendenceRouter);
-app.use("/api/v1/students", limiter, userRouter);
-app.use("/api/v1/admin", authLimiter, adminRouter);
-app.use("/api/v1/batches", limiter, batchesRouter);
-app.use("/api/v1/notices", limiter, noticesRouter);
-app.use("/api/v1/results", limiter, resultRouter);
-app.use("/api/v1/fees", limiter, feesRouter);
-app.use("/api/v1/dashboard", limiter, dashboardRouter);
+app.use("/api/v1/users", otpRouter); 
+app.use("/api/v1/attendence", markAttendenceRouter);
+app.use("/api/v1/students",  userRouter);
+app.use("/api/v1/admin",  adminRouter);
+app.use("/api/v1/batches",  batchesRouter);
+app.use("/api/v1/notices",  noticesRouter);
+app.use("/api/v1/results",  resultRouter);
+app.use("/api/v1/fees",  feesRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
 
 export default app;
