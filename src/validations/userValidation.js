@@ -26,7 +26,7 @@ export const UserRegisterValidationSchema = z.object({
 
     EnrollmentNumber: z
     .string({ required_error: "Enrollment Number is required" })
-    .min(1, { message: "Enrollment Number cannot be empty" })
+    .min(5, { message: "Enrollment Number cannot be empty" })
     .trim()
     .toUpperCase(), 
   selectedRole: z

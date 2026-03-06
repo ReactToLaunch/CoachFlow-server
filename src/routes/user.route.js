@@ -10,6 +10,7 @@ router.route("/login").post(loginUser)
 router.route("/otp-generate").post(Otpgenerate);
 
 router.route("/verify-otp").post(verifyOtp);
+
 router.route("/resetPassword").post(protect, resetPassword);
 
 router.route("/saveToken").put(protect, SaveFcmToken)

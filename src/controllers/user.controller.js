@@ -70,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   let BatchObjectId = null
-  const validBatchId = await Batch.findById(BatchId)
+  const validBatchId = await Batch.findById(BatchId);
 
   if (selectedRole === "student") {
     if (!BatchId) {

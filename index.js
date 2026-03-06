@@ -2,14 +2,9 @@ import express from "express";
 import ConnectDb from "./src/config/db.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import { errorHandler } from "./src/middlewares/ErrorHandler.js";
 
-// Security Imports
-// import helmet from "helmet";
-// import rateLimit from "express-rate-limit";
-// import mongoSanitize from "express-mongo-sanitize";
-// import hpp from "hpp";
-// import cors from "cors";
-// import { sanitizeInput } from "./src/middlewares/sanitizer.js";
+
 
 // Routes
 import userRouter from './src/routes/user.route.js';
@@ -27,53 +22,6 @@ dotenv.config({
 });
 
 const app = express();
-
-
-// app.use(helmet());
-// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-
-
-// const corsOptions = {
-
-//   origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-//   credentials: true,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-//   allowedHeaders: [
-//     'Content-Type',
-//     'Authorization',
-//     'X-Requested-With',
-//     'X-Content-Type-Options'
-//   ],
-// };
-
-// app.use(cors(corsOptions));
-
-// Rate Limiters
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 50,
-//   message: "Too many requests from this IP, please try again after 15 minutes"
-// });
-
-// const authLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 10, 
-//   message: "Too many authentication attempts, please try again later"
-// });
-
-
-// const admin2FALimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 5, 
-//   message: "Too many OTP requests. Please try again later.",
-//   standardHeaders: true,
-//   legacyHeaders: false,
-// });
-
-// Data Sanitization
-// app.use(mongoSanitize());
-// app.use(sanitizeInput);
-// app.use(hpp());
 
 
 
@@ -118,5 +66,6 @@ app.use("/api/v1/notices",  noticesRouter);
 app.use("/api/v1/results",  resultRouter);
 app.use("/api/v1/fees",  feesRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
+app.use(errorHandler);
 
 export default app;
