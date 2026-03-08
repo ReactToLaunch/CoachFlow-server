@@ -1,0 +1,26 @@
+{
+  "name": "Login-student",
+  "rank": "auntit17729489480311",
+  "request": {
+    "type": "http",
+    "url": "https://vlx-server.onrender.com/api/v1/users/login",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \n  \"email\": \"syed.aasim@example.com\",\n  \"password\": \"Passw0rd\",\n  \n  \"EnrollmentNumber\": \"ENR2026CS001\"\n  \n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {
+        "BASIC_AUTH": {
+          "username": "",
+          "password": ""
+        }
+      }
+    }
+  }
+}
