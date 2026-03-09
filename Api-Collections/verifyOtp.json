@@ -1,0 +1,20 @@
+{
+  "name": "verifyOtp",
+  "request": {
+    "type": "http",
+    "url": "https://coachflow-server.onrender.com/api/v1/users/verify",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"email\": \"syed.aasim@example.com\",\n  \"otp\": \"8885\"\n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

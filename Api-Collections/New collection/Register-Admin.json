@@ -1,0 +1,21 @@
+{
+  "name": "Register-Admin",
+  "rank": "av",
+  "request": {
+    "type": "http",
+    "url": "https://coachflow-server.onrender.com/api/v1/admin/registerAdmin",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"Name\": \"test\",\n  \"email\": \"test123@gmail.com\",\n  \"password\": \"test1234\",\n  \"secretKey\": \"ce45e96648a8be6577b57ddf6d81de016e413b1fe7d93b67a9e3696b6c5b4ed50182828453fa4f802f20ad38bfefb53ccd9f0beb693e77c0ad74af012813996f\"\n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

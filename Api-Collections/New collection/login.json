@@ -1,0 +1,21 @@
+{
+  "name": "login",
+  "rank": "auntit17729534482451",
+  "request": {
+    "type": "http",
+    "url": "https://coachflow-server.onrender.com/api/v1/users/login",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"email\": \"syed.aasim@example.com\",\n  \"EnrollmentNumber\": \"ENR2026CS001\",\n  \"password\": \"Passw0rd\"\n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}
