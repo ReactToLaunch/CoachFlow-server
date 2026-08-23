@@ -1,0 +1,57 @@
+{
+  "$schema": "https://assets.requestly.com/local/v1.11.0/body.json",
+  "contentType": "multipart/form-data",
+  "formData": [
+    {
+      "id": 1781379166725001,
+      "key": "name",
+      "value": "DSA Handwritten Notes",
+      "isEnabled": true,
+      "type": "text"
+    },
+    {
+      "id": 1781379752593031,
+      "key": "details",
+      "value": "Casio FX-991ES Plus, barely used, all functions workingCasio FX-991ES Plus, barely used, all functions working",
+      "isEnabled": true,
+      "type": "text"
+    },
+    {
+      "id": 1781379779391032,
+      "key": "price",
+      "value": "150",
+      "isEnabled": true,
+      "type": "text"
+    },
+    {
+      "id": 1781379808576033,
+      "key": "category",
+      "value": "Notes",
+      "isEnabled": true,
+      "type": "text"
+    },
+    {
+      "id": 1781379832761034,
+      "key": "status",
+      "value": "available",
+      "isEnabled": true,
+      "type": "text"
+    },
+    {
+      "id": 1781380042786037,
+      "key": "images",
+      "value": [
+        {
+          "type": "reference",
+          "id": "I am vengeance. I am Batman..Fan art created For showcase purposes only. All characters and trad.jpg-1781380059746",
+          "name": "I am vengeance. I am Batman..Fan art created For showcase purposes only. All characters and trad.jpg",
+          "path": "E:\\I am vengeance. I am Batman..Fan art created For showcase purposes only. All characters and trad.jpg",
+          "size": 497520,
+          "source": "desktop"
+        }
+      ],
+      "isEnabled": true,
+      "type": "file"
+    }
+  ]
+}

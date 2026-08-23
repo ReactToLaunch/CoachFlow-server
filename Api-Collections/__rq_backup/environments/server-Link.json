@@ -1,0 +1,11 @@
+{
+  "name": "server-Link",
+  "variables": {
+    "server": {
+      "value": "https://coachflow-server.onrender.com",
+      "type": "string",
+      "id": "8959dfa1-a197-49df-b110-f7cc4607eaf0",
+      "isSecret": false
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://assets.requestly.com/local/v1.5.0/metadata.json",
+  "type": "api",
+  "entryType": "http",
+  "id": "1fc2425a-157c-472a-b280-d7a2f4e54219",
+  "rank": "aw",
+  "url": "https://coachflow-server.onrender.com/api/v1/users/generateotp",
+  "method": "POST",
+  "contentType": "json"
+}

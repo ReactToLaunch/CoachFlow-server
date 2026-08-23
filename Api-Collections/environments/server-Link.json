@@ -1,11 +1,17 @@
 {
-  "name": "server-Link",
+  "$schema": "https://assets.requestly.com/local/v1.5.0/environment.json",
+  "id": "99848110-2b5f-42fd-927d-2964d86c7594",
   "variables": {
     "server": {
-      "value": "https://coachflow-server.onrender.com",
+      "id": "44f5c768-b4c5-489e-8c3c-e171443347bd",
+      "syncValue": "https://coachflow-server.onrender.com",
       "type": "string",
-      "id": "8959dfa1-a197-49df-b110-f7cc4607eaf0",
-      "isSecret": false
+      "isEnabled": true,
+      "rank": "a0000",
+      "createdAt": "2026-05-24T05:40:53.640Z",
+      "updatedAt": "2026-05-24T05:40:53.640Z",
+      "createdBy": null,
+      "updatedBy": null
     }
   }
 }

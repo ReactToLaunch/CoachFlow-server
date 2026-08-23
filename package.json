@@ -1,7 +1,7 @@
 {
-  "name": "olx",
+  "name": "CoachFlow",
   "version": "1.0.0",
-  "description": "This is the app just like ola and uber but for Vnit Students to Book and Track E-vehicals",
+  "description": "A web application for managing coaching sessions and client interactions.",
   "license": "ISC",
   "author": "Syed Aasim",
   "type": "module",
